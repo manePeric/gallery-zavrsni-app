@@ -46,9 +46,9 @@ function App() {
           )}
         </nav>
         <Switch>
-          <Route exact path="/">
+          <PrivateRoute exact path="/">
             <Galleries />
-          </Route>
+          </PrivateRoute>
           <PublicRoute exact path="/login">
             <Login
               onLogin={() => {

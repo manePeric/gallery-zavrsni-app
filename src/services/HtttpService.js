@@ -9,7 +9,7 @@ export default class HttpService {
     this.client.interceptors.request.use(function (req) {
       const token = localStorage.getItem("token");
       if (token) {
-        req.headers["Authoriaztion"] = `Bearer ${token}`;
+        req.headers["Authorization"] = `Bearer ${token}`;
       }
 
       return req;

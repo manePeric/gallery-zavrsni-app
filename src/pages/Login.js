@@ -21,9 +21,7 @@ export default function Login({ onLogin }) {
       history.push("/");
     } catch {
       setInvalidCredentials(true);
-      alert("invalid credentials");
     }
-    console.log("logged in successfully");
   }
 
   return (
