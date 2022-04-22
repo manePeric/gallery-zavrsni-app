@@ -1,28 +1,20 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import authService from "../services/AuthService";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../store/Auth/slice";
 
-export default function Login({ onLogin }) {
-  const history = useHistory();
+export default function Login() {
+  const dispatch = useDispatch();
+
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
 
-  const [invalidCredentials, setInvalidCredentials] = useState(false);
-
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setInvalidCredentials(false);
 
-    try {
-      await authService.login(credentials);
-      onLogin();
-      history.push("/");
-    } catch {
-      setInvalidCredentials(true);
-    }
-  }
+    dispatch(login(credentials));
+  };
 
   return (
     <div>
@@ -49,9 +41,6 @@ export default function Login({ onLogin }) {
             setCredentials({ ...credentials, password: target.value })
           }
         />
-        {invalidCredentials && (
-          <p style={{ color: "red" }}>Invalid credentials</p>
-        )}
         <button>Login</button>
       </form>
     </div>

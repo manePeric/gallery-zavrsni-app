@@ -1,18 +1,29 @@
-import HttpService from "./HtttpService";
+import HttpService from "./HttpService";
 
 class AuthService extends HttpService {
-  async login(credentials) {
+  constructor() {
+    super();
+    this.login = this.login.bind(this);
+  }
+
+  login = async (credentials) => {
     const { data } = await this.client.post("/login", credentials);
-    localStorage.setItem("token", data.token);
-  }
-  async register(userData) {
+    return data;
+  };
+
+  register = async (userData) => {
     const { data } = await this.client.post("/register", userData);
-    localStorage.setItem("token", data.token);
-  }
-  async logout() {
+    return data;
+  };
+
+  getMyProfile = async () => {
+    const { data } = await this.client.get("/my-gallery");
+    return data;
+  };
+
+  logout = async () => {
     await this.client.post("/logout");
-    localStorage.removeItem("token");
-  }
+  };
 }
 
 const authService = new AuthService();

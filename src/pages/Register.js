@@ -1,32 +1,22 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import authService from "../services/AuthService";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { register } from "../store/Auth/slice";
 
-export default function Register({ onRegister }) {
-  const history = useHistory();
-  const [credentials, setCredentials] = useState({
+export default function Register() {
+  const dispatch = useDispatch();
+  const [userData, setUserData] = useState({
     email: "",
     password: "",
     password_confirmation: "",
     firstName: "",
     lastName: "",
-    checkbox: true,
+    terms: true,
   });
 
-  const [invalidCredentials, setInvalidCredentials] = useState(false);
-
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setInvalidCredentials(false);
-
-    try {
-      await authService.register(credentials);
-      history.push("/");
-      onRegister();
-    } catch {
-      setInvalidCredentials(true);
-    }
-  }
+    dispatch(register(userData));
+  };
 
   return (
     <div>
@@ -37,46 +27,46 @@ export default function Register({ onRegister }) {
       >
         <input
           required
-          value={credentials.firstName}
+          value={userData.firstName}
           placeholder="First Name"
           onChange={({ target }) =>
-            setCredentials({ ...credentials, firstName: target.value })
+            setUserData({ ...userData, firstName: target.value })
           }
         />
         <input
           required
-          value={credentials.lastName}
+          value={userData.lastName}
           placeholder="Last Name"
           onChange={({ target }) =>
-            setCredentials({ ...credentials, lastName: target.value })
+            setUserData({ ...userData, lastName: target.value })
           }
         />
         <input
           required
-          value={credentials.email}
+          value={userData.email}
           type="email"
           placeholder="Email"
           onChange={({ target }) =>
-            setCredentials({ ...credentials, email: target.value })
+            setUserData({ ...userData, email: target.value })
           }
         />
         <input
           required
-          value={credentials.password}
+          value={userData.password}
           type="password"
           placeholder="Password"
           onChange={({ target }) =>
-            setCredentials({ ...credentials, password: target.value })
+            setUserData({ ...userData, password: target.value })
           }
         />
         <input
           required
-          value={credentials.password_confirmation}
+          value={userData.password_confirmation}
           type="password"
           placeholder="Confirm password"
           onChange={({ target }) =>
-            setCredentials({
-              ...credentials,
+            setUserData({
+              ...userData,
               password_confirmation: target.value,
             })
           }
@@ -84,18 +74,15 @@ export default function Register({ onRegister }) {
         Accept Terms of Use
         <input
           required
-          value={credentials.checkbox}
+          value={userData.terms}
           type="checkbox"
           onChange={({ target }) =>
-            setCredentials({
-              ...credentials,
-              checkbox: target.value,
+            setUserData({
+              ...userData,
+              terms: target.value,
             })
           }
         ></input>
-        {invalidCredentials && (
-          <p style={{ color: "red" }}>Invalid credentials</p>
-        )}
         <button>Register</button>
       </form>
     </div>
