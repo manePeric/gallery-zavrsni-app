@@ -1,11 +1,13 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 
-import activeUserReducer from "./Auth/slice";
+import activeUserReducer from "./auth/slice";
+import galleriesReducer from "./galleries/slice";
 import sagas from "./rootSaga";
 
 const reducers = {
   activeUser: activeUserReducer,
+  galleries: galleriesReducer,
 };
 
 const sagaMiddleware = createSagaMiddleware();
