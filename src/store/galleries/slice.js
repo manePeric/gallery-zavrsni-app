@@ -4,6 +4,9 @@ const middlewareActions = {
   getGalleries() {},
   getGallery() {},
   createGallery() {},
+  editGallery() {},
+  deleteGallery() {},
+  createComment() {},
 };
 
 const galleriesSlice = createSlice({
@@ -39,6 +42,12 @@ const galleriesSlice = createSlice({
     setGalleriesWithNewGallery(state, action) {
       state.page.data = [...state.page.data, action.payload];
     },
+    setGalleryWithNewComment(state, action) {
+      state.gallery = {
+        ...state.gallery,
+        comments: [...state.gallery.comments, action.payload],
+      };
+    },
     ...middlewareActions,
   },
 });
@@ -53,6 +62,10 @@ export const {
   getGallery,
   createGallery,
   setGalleriesWithNewGallery,
+  createComment,
+  setGalleryWithNewComment,
+  editGallery,
+  deleteGallery,
 } = galleriesSlice.actions;
 
 export default galleriesSlice.reducer;

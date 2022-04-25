@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { selectGallery } from "../store/galleries/selectors";
-import { createGallery } from "../store/galleries/slice";
+import { createGallery, editGallery } from "../store/galleries/slice";
 
 export default function CreateGallery() {
   const dispatch = useDispatch();
@@ -22,10 +22,32 @@ export default function CreateGallery() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createGallery(newGallery));
-    setTimeout(() => {
-      history.push("galleries");
-    }, 1500);
+
+    if (id) {
+      if (!retrievedGallery) {
+        alert("You cannot edit other people's galleries");
+        history.push("/galleries");
+        return;
+      }
+      dispatch(
+        editGallery({
+          newGallery: {
+            galleryId: id,
+            title: newGallery.title,
+            description: newGallery.description,
+            images: newGallery.images,
+          },
+        })
+      );
+      setTimeout(() => {
+        history.push(`/galleries/${retrievedGallery.id}`);
+      }, 1500);
+    } else {
+      dispatch(createGallery(newGallery));
+      setTimeout(() => {
+        history.push("/galleries/my-galleries");
+      }, 1500);
+    }
   };
 
   const handleCancel = (e) => {
@@ -33,7 +55,7 @@ export default function CreateGallery() {
     if (id) {
       history.push(`/galleries/${retrievedGallery.id}`);
     } else {
-      history.push("/galleries");
+      history.push("/galleries/my-galleries");
     }
   };
 
@@ -117,7 +139,7 @@ export default function CreateGallery() {
           })}
 
         <span>
-          <button type="submit">Submit Post</button>
+          <button type="submit">{id ? "Edit" : "Submit"}</button>
           <button onClick={handleCancel}>Cancel</button>
         </span>
       </form>

@@ -49,7 +49,7 @@ export default function Galleries({ selfId = null }) {
       <h1>
         {selfId && "My "}
         {id && galleries.data.length ? (
-          `${galleries?.data[0]?.user?.first_name}'s `
+          `${galleries?.data[0]?.user?.firstName}'s `
         ) : (
           <></>
         )}

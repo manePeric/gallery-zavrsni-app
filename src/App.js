@@ -10,15 +10,19 @@ import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Galleries from "./pages/Galleries";
-import createGallery from "./pages/CreateGallery";
 import { logout } from "./store/auth/slice";
-import { selectIsAuthenticated } from "./store/auth/selectors";
+import {
+  selectActiveUser,
+  selectIsAuthenticated,
+} from "./store/auth/selectors";
 import { useSelector, useDispatch } from "react-redux";
 import CreateGallery from "./pages/CreateGallery";
+import Gallery from "./pages/Gallery";
 
 function App() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const dispatch = useDispatch();
+  const activeUser = useSelector(selectActiveUser);
 
   function handleLogout() {
     dispatch(logout());
@@ -39,6 +43,11 @@ function App() {
             {!isAuthenticated && (
               <li>
                 <Link to="/register">Register</Link>
+              </li>
+            )}
+            {isAuthenticated && (
+              <li>
+                <Link to="/galleries/my-galleries">My Galleries</Link>
               </li>
             )}
             {isAuthenticated && (
@@ -66,7 +75,19 @@ function App() {
           <Route exact path="/galleries">
             <Galleries />
           </Route>
+          <PrivateRoute exact path="/galleries/my-galleries">
+            <Galleries selfId={isAuthenticated ? activeUser?.id : null} />
+          </PrivateRoute>
           <PrivateRoute exact path="/create">
+            <CreateGallery />
+          </PrivateRoute>
+          <Route exact path="/galleries/:id">
+            <Gallery />
+          </Route>
+          <Route exact path="/authors/:id">
+            <Galleries />
+          </Route>
+          <PrivateRoute exact path="/edit-gallery/:id">
             <CreateGallery />
           </PrivateRoute>
         </Switch>
